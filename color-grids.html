@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>etch a sketch</title>
+</head>
+<body>
+    <div class="large-container" id="myContainer"></div>
+
+    <script>
+        const rows = 16;
+        const columns = 16;
+
+        const gridContainer = document.getElementById('myContainer');
+
+        // Create the grid
+        for (let i = 0; i < rows; i++) {
+            const row = document.createElement('div');
+            row.className = 'flex-container'; 
+            for (let j = 0; j < columns; j++) {
+                // Create a grid item
+                const gridItem = document.createElement('div');
+                gridItem.className = 'grid-item';
+                row.appendChild(gridItem);
+            }
+            gridContainer.appendChild(row);
+        }
+    </script>
+    
+</body>
+</html>
