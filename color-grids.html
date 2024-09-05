@@ -24,6 +24,9 @@
                 const gridItem = document.createElement('div');
                 gridItem.className = 'grid-item';
                 row.appendChild(gridItem);
+                gridItem.addEventListener("mouseenter", (event) => {
+                    gridItem.classList.add('hover-style');
+                })
             }
             gridContainer.appendChild(row);
         }

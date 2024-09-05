@@ -5,13 +5,19 @@
     justify-content: center;
     align-items: center;
 }
+
 .flex-container {
     display: flex;
     gap: 2px;
     justify-content: center;
     align-items: center;
 }
+
 .grid-item {
     background-color: #e0e0e0;
     padding: 20px;
+}
+
+.hover-style {
+    background-color: purple;
 }
