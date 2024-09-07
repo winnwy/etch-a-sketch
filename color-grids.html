@@ -7,25 +7,48 @@
     <title>etch a sketch</title>
 </head>
 <body>
-    <button id = "myButton" onclick="myPrompt()">New grid</button>
-    <button id = "oneColor">Color</button>
+    <button id = "myButton" onclick="myPrompt()">New Grid</button>
     <input type="color" id="colorPicker" value="#800080">
     <button id = "colorful">Rainbow Effect</button>
     <button id = "darkening">Darkening Effect</button>
+    <button id = "erase">Erase</button>
     <div class="container">
         <div class="large-container" id="myContainer"></div>
     </div>
 
     <script>
         let defaultColor = '#800080'; // Default color set to purple
+        let isRainbow = false;
+        let darkening = false;
         generateGrid(16);
 
         document.getElementById("colorPicker").addEventListener("input", function(event) {
+            isRainbow = false;
+            darkening = false;
             defaultColor = event.target.value; 
         });
 
+        document.getElementById("darkening").addEventListener("click", function(event) {
+            darkening = true;
+            isRainbow = false;
+        });
+
+        document.getElementById("colorful").addEventListener("click", function(event) {
+            darkening = false;
+            isRainbow = true;
+        });
+
+        document.getElementById("erase").addEventListener("click", function(event) {
+            const gridItems = document.querySelectorAll('.grid-item');
+            gridItems.forEach(item => {
+                item.style.backgroundColor = '#d3d3d3'; // Light grey
+                item.style.filter = ''; // Reset any brightness adjustments
+                item.dataset.brightness = ''; // Clear brightness data
+            });
+        });
+
         function myPrompt() {
-            var userGridSize = prompt("Please provide the number of squares per side for the new grid (max: 100)", "16");
+            let userGridSize = prompt("Please provide the number of squares per side for the new grid (max: 100)", "16");
             // alert (userGridsize);
             if (isNaN(userGridSize) || userGridSize <= 0 || userGridSize > 100) {
                 alert("Please enter a number between 1 and 100.");
@@ -63,7 +86,21 @@
                     gridItem.style.height = `${gridItemSize}px`;
                     row.appendChild(gridItem);
                     gridItem.addEventListener("mouseenter", (event) => {
-                        gridItem.style.backgroundColor = `${defaultColor}`;
+                        if (isRainbow) {
+                            let randomColor = Math.floor(Math.random()*16777215).toString(16);
+                            gridItem.style.backgroundColor = `#${randomColor}`;
+                        } else if (darkening) {
+                            let currentBrightness = gridItem.dataset.brightness || 100;
+                            currentBrightness = parseInt(currentBrightness) - 10;
+
+                            if (currentBrightness >= 0) {
+                                gridItem.style.filter = `brightness(${currentBrightness}%)`;
+                                gridItem.dataset.brightness = currentBrightness;
+                            }
+                        } else {
+                            gridItem.style.backgroundColor = `${defaultColor}`;
+                        }
+                        
                     })
                 }
                 gridContainer.appendChild(row);
