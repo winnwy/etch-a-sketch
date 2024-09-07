@@ -20,6 +20,8 @@
         let defaultColor = '#800080'; // Default color set to purple
         let isRainbow = false;
         let darkening = false;
+        let isDrawing = false;
+
         generateGrid(16);
 
         document.getElementById("colorPicker").addEventListener("input", function(event) {
@@ -85,25 +87,41 @@
                     gridItem.style.width = `${gridItemSize}px`;
                     gridItem.style.height = `${gridItemSize}px`;
                     row.appendChild(gridItem);
-                    gridItem.addEventListener("mouseenter", (event) => {
-                        if (isRainbow) {
-                            let randomColor = Math.floor(Math.random()*16777215).toString(16);
-                            gridItem.style.backgroundColor = `#${randomColor}`;
-                        } else if (darkening) {
-                            let currentBrightness = gridItem.dataset.brightness || 100;
-                            currentBrightness = parseInt(currentBrightness) - 10;
 
-                            if (currentBrightness >= 0) {
-                                gridItem.style.filter = `brightness(${currentBrightness}%)`;
-                                gridItem.dataset.brightness = currentBrightness;
-                            }
-                        } else {
-                            gridItem.style.backgroundColor = `${defaultColor}`;
-                        }
+                    gridItem.addEventListener("mousedown", (event) => {
+                        isDrawing = true; // Start drawing
+                        draw(gridItem);
+                    });
+
+                    gridItem.addEventListener("mouseup", (event) => {
+                        isDrawing = false; // Stop drawing
                         
+                    })
+
+                    gridItem.addEventListener("mouseenter", (event) => {
+                        if (isDrawing) {
+                            draw(gridItem)
+                        }
                     })
                 }
                 gridContainer.appendChild(row);
+            }
+
+            function draw(gridItem) {
+                if (isRainbow) {
+                    let randomColor = Math.floor(Math.random()*16777215).toString(16);
+                    gridItem.style.backgroundColor = `#${randomColor}`;
+                } else if (darkening) {
+                    let currentBrightness = gridItem.dataset.brightness || 100;
+                    currentBrightness = parseInt(currentBrightness) - 10;
+
+                    if (currentBrightness >= 0) {
+                        gridItem.style.filter = `brightness(${currentBrightness}%)`;
+                        gridItem.dataset.brightness = currentBrightness;
+                    }
+                } else {
+                    gridItem.style.backgroundColor = `${defaultColor}`;
+                }
             }
         }
         
