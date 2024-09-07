@@ -8,12 +8,21 @@
 </head>
 <body>
     <button id = "myButton" onclick="myPrompt()">New grid</button>
+    <button id = "oneColor">Color</button>
+    <input type="color" id="colorPicker" value="#800080">
+    <button id = "colorful">Rainbow Effect</button>
+    <button id = "darkening">Darkening Effect</button>
     <div class="container">
         <div class="large-container" id="myContainer"></div>
     </div>
 
     <script>
+        let defaultColor = '#800080'; // Default color set to purple
         generateGrid(16);
+
+        document.getElementById("colorPicker").addEventListener("input", function(event) {
+            defaultColor = event.target.value; 
+        });
 
         function myPrompt() {
             var userGridSize = prompt("Please provide the number of squares per side for the new grid (max: 100)", "16");
@@ -54,7 +63,7 @@
                     gridItem.style.height = `${gridItemSize}px`;
                     row.appendChild(gridItem);
                     gridItem.addEventListener("mouseenter", (event) => {
-                        gridItem.classList.add('hover-style');
+                        gridItem.style.backgroundColor = `${defaultColor}`;
                     })
                 }
                 gridContainer.appendChild(row);
